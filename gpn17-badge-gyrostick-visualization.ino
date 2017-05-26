@@ -1,5 +1,6 @@
 #include <GPNBadge.hpp>
 #include <FS.h>
+#include "colors.h"
 
 #include "rboot.h"
 #include "rboot-api.h"
@@ -9,16 +10,13 @@
 Badge badge;
 Gyrostick gyrostick;
 
-#define COLOR_WHITE 0xFFFF
-#define COLOR_BLACK 0x0000
-
 void setup() {
   badge.init();
   bno.begin();
 
   SPIFFS.begin();
 
-  tft.fillScreen(COLOR_BLACK);
+  tft.fillScreen(BLACK);
   tft.writeFramebuffer();
   badge.setBacklight(true);
 
@@ -33,15 +31,15 @@ void setup() {
 }
 
 void loop() {
-  tft.fillScreen(COLOR_BLACK);
+  tft.fillScreen(BLACK);
 
   imu::Vector<2> coords = gyrostick.coords();
 
   tft.drawCircle(
-    coords.x(),
-    coords.y(),
-    5.0, // scale
-    COLOR_WHITE);
+   coords.x(),
+   coords.y(),
+   5.0, // scale
+   WHITE);
 
   tft.writeFramebuffer();
 

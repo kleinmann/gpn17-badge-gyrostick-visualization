@@ -21,6 +21,8 @@ void setup() {
 
   SPIFFS.begin();
 
+  tft.fillScreen(COLOR_BLACK);
+  tft.writeFramebuffer();
   badge.setBacklight(true);
   
   // TODO: Is this needed?
@@ -34,9 +36,6 @@ void setup() {
   rboot_config rboot_config = rboot_get_config();
   File f = SPIFFS.open("/rom" + String(rboot_config.current_rom), "w");
   f.println("GyroVis\n");
-
-  tft.fillScreen(COLOR_BLACK);
-  tft.writeFramebuffer();
 }
 
 void loop() {
@@ -45,8 +44,8 @@ void loop() {
   data = euler();
 
   double x = getUsableX(data.x());
-  double y = data.y() + 180.0;
-  double z = data.z() + 90.0; // holding device in front of you means "centered"
+  double y = constrain(data.y() * 8.0, -180.0, 180.0) + 180.0;
+  double z = constrain((data.z() - 60.0) * 8.0, -180.0, 180.0) + 180.0; // holding device in front of you means "centered"
 
   tft.setCursor(10, 60);
   tft.println(x);

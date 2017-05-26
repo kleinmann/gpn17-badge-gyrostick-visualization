@@ -1,7 +1,5 @@
 #include <GPNBadge.hpp>
 #include <FS.h>
-#include <BadgeUI.h>
-#include <UIThemes.h>
 
 #include "rboot.h"
 #include "rboot-api.h"
@@ -26,10 +24,8 @@ void setup() {
 
   // TODO: Is this needed?
   badge.setGPIO(IR_EN, LOW);
-  badge.setAnalogMUX(MUX_JOY);
 
   delay(300);
-  badge.setGPIO(MQ3_EN, 1);
 
   rboot_config rboot_config = rboot_get_config();
   File f = SPIFFS.open("/rom" + String(rboot_config.current_rom), "w");
@@ -40,11 +36,6 @@ void loop() {
   tft.fillScreen(COLOR_BLACK);
 
   imu::Vector<2> coords = gyrostick.coords();
-
-  tft.setCursor(2, 2);
-  tft.println(coords.x());
-  tft.setCursor(2, 20);
-  tft.println(coords.y());
 
   tft.drawCircle(
     coords.x(),
